@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Sky</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0e17;--panel:#171c2c;--accent:#8b5cf6;--text:#f5f3ff;--muted:#a5adc3}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,sans-serif;padding:20px}.app{max-width:850px;margin:auto}header{padding:20px 0}h1{margin:0;color:#b7a0ff}.panel{background:var(--panel);padding:18px;border-radius:16px;margin:16px 0}input,button{font:inherit;padding:12px;border-radius:10px;border:1px solid #343a50}input{background:var(--bg);color:var(--text);width:100%;min-width:0}button{background:var(--accent);color:white;border:0;cursor:pointer}.line{display:flex;gap:8px}.line input{flex:1}li{margin:10px 0;overflow-wrap:anywhere}.muted{color:var(--muted)}@media(max-width:480px){body{padding:14px}.line{flex-direction:column}}
+</style>
+</head>
+<body><main class="app"><header><h1>☁️ Study Sky</h1><p class="muted">Your ideas. Your subjects. Your future.</p></header><section class="panel"><h2>My Subjects</h2><form id="form" class="line"><input id="subject" placeholder="Enter a subject name" required maxlength="80"><button>Add</button></form><ul id="subjects"></ul></section><p class="muted">Your subjects are saved in this browser on this device.</p></main>
+<script>
+const key="studysky-subjects-v1";let subjects=[];try{subjects=JSON.parse(localStorage.getItem(key)||"[]");if(!Array.isArray(subjects))subjects=[]}catch{}
+const input=document.getElementById("subject"),list=document.getElementById("subjects");function render(){list.replaceChildren();subjects.forEach((s,i)=>{const li=document.createElement("li");li.append(document.createTextNode(s+" "));const b=document.createElement("button");b.type="button";b.textContent="Delete";b.onclick=()=>{subjects.splice(i,1);save()};li.append(b);list.append(li)});localStorage.setItem(key,JSON.stringify(subjects))}function save(){render()}
+document.getElementById("form").addEventListener("submit",e=>{e.preventDefault();const name=input.value.trim();if(!name)return;if(subjects.some(s=>s.toLowerCase()===name.toLowerCase())){alert("That subject already exists.");return}subjects.push(name);input.value="";save()});render();
+</script></body></html>
